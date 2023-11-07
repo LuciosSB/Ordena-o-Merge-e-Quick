@@ -1,160 +1,73 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+Ordenação Merge:
 
-# C extensions
-*.so
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+def intercala(x, inicio, fim, meio):
+    inicio_vetor1 = inicio
+    inicio_vetor2 = meio + 1
+    poslivre = inicio
+    aux = [0] * len(x)
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+    while inicio_vetor1 <= meio and inicio_vetor2 <= fim:
+        if x[inicio_vetor1] <= x[inicio_vetor2]:
+            aux[poslivre] = x[inicio_vetor1]
+            inicio_vetor1 += 1
+        else:
+            aux[poslivre] = x[inicio_vetor2]
+            inicio_vetor2 += 1
+        poslivre += 1
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+    for i in range(inicio_vetor1, meio + 1):
+        aux[poslivre] = x[i]
+        poslivre += 1
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
+    for i in range(inicio_vetor2, fim + 1):
+        aux[poslivre] = x[i]
+        poslivre += 1
 
-# Translations
-*.mo
-*.pot
+    for i in range(inicio, fim + 1):
+        x[i] = aux[i]
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+def mergeSort(x, inicio, fim):
+    if inicio < fim:
+        meio = (inicio + fim) // 2
+        mergeSort(x, inicio, meio)
+        mergeSort(x, meio + 1, fim)
+        intercala(x, inicio, fim, meio)
 
-# Flask stuff:
-instance/
-.webassets-cache
+x = [38, 27, 43, 3, 9, 82, 10]
+mergeSort(x, 0, len(x) - 1)
+print(x)
 
-# Scrapy stuff:
-.scrapy
 
-# Sphinx documentation
-docs/_build/
+Ordenação Quick:
 
-# PyBuilder
-.pybuilder/
-target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+def particao(X, inicio, fim):
+    posicao_pivo = (inicio + fim) // 2
+    pivo = X[posicao_pivo]
+    i = inicio
+    j = fim
 
-# IPython
-profile_default/
-ipython_config.py
+    while i <= j:
+        while X[i] < pivo:
+            i += 1
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+        while X[j] > pivo:
+            j -= 1
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+        if i <= j:
+            X[i], X[j] = X[j], X[i]
+            i += 1
+            j -= 1
 
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
+    return i
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/#use-with-ide
-.pdm.toml
+def quickSort(X, inicio, fim):
+    if inicio < fim:
+        indice_pivo = particao(X, inicio, fim)
+        quickSort(X, inicio, indice_pivo - 1)
+        quickSort(X, indice_pivo, fim)
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+x = [6, 1, 8, 2, 7]
+quickSort(x, 0, len(x) - 1)
+print(x)
